@@ -154,8 +154,8 @@ Before you begin, ensure you have the following installed:
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
    
-   # Gemini AI Configuration (Optional - for AI categorization)
-   GEMINI_API_KEY=your_gemini_api_key_here
+   # Groq AI Configuration (Optional - for AI categorization)
+   GROQ_API_KEY=your_groq_api_key_here
    ```
    
    **Frontend Configuration:**
@@ -317,7 +317,7 @@ Authorization: Bearer <jwt_token>
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID | Yes | - |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | Yes | - |
 | `GOOGLE_CALLBACK_URL` | OAuth callback URL | Yes | - |
-| `GEMINI_API_KEY` | Google Gemini AI API key | No | - |
+| `GROQ_API_KEY` | Groq AI API key | No | - |
 
 #### Frontend (client/.env)
 | Variable | Description | Required | Default |

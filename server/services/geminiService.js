@@ -1,10 +1,10 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import Category from "../models/category.model.js";
 
 class GeminiCategorizationService {
   constructor() {
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    this.groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    this.model = "llama-3.3-70b-versatile";
     this.cache = new Map();
     this.domainCache = new Map();
     this.requestQueue = [];
@@ -171,9 +171,24 @@ Respond ONLY with valid JSON, no markdown formatting:
 - **productivityScore**: 1-3 (distracting), 4-6 (neutral), 7-10 (productive)
 - **tags**: 3-5 lowercase, descriptive tags for the content`;
 
-      const result = await this.model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+      const result = await this.groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are an expert web activity classifier. Respond only with valid JSON."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        model: this.model,
+        temperature: 0.3,
+        max_tokens: 500,
+        response_format: { type: "json_object" }
+      });
+      
+      const text = result.choices[0]?.message?.content || "{}";
 
       let analysis;
       try {
